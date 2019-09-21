@@ -42,10 +42,10 @@ extern "C" {
 		bool generic = false, bool with_expr = true, bool with_gpu = true,
 		int gpu_device_id = 0);
 
-	FACE_SWAP_EXPORT int process(FaceDataInterface* face_data);
+	FACE_SWAP_EXPORT int process(FaceDataInterface* face_data, bool use_dlib);
 
 	FACE_SWAP_EXPORT int swap(FaceDataInterface* src_data, FaceDataInterface* tgt_data,
-		unsigned char* out);
+		unsigned char* out, bool use_dlib);
 }
 
 

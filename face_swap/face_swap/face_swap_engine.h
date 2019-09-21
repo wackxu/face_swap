@@ -58,7 +58,7 @@ namespace face_swap
 		@param[in] process_flipped Toggle processing of flipped image.
 		@return true for success and false for failure.
 		*/
-		virtual bool process(FaceData& face_data, bool process_flipped = false) = 0;
+		virtual bool process(FaceData& face_data, bool process_flipped = false, bool use_dlib = false) = 0;
 
 		virtual cv::Mat renderFaceData(const FaceData& face_data, float scale = 1.0f) = 0;
 

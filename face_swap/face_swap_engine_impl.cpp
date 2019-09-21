@@ -166,7 +166,7 @@ namespace face_swap
 	bool FaceSwapEngineImpl::process(FaceData& face_data, bool process_flipped, bool use_dlib)
 	{
 		// Preprocess input image
-		if (face_data.scaled_landmarks.empty())
+		if (face_data.cropped_landmarks.empty())
 		{
 			if (!preprocessImages(face_data, use_dlib))
 				return false;
@@ -285,15 +285,14 @@ namespace face_swap
 		////std::cout << "faces found = " << lmsFrame.faces.size() << std::endl;    // Debug
 		//const sfl::Face* face = lmsFrame.getFace(sfl::getMainFaceID(m_sfl->getSequence()));
 
-		std::vector<Face> faces;
 		if (use_dlib)
         {
+            std::vector<Face> faces;
             m_lms->process(face_data.img, faces);
+            if (faces.empty()) return false;
+            Face& main_face = faces[getMainFaceID(faces, face_data.img.size())];
+            face_data.scaled_landmarks = main_face.landmarks;
         }
-
-		if (faces.empty()) return false;
-		Face& main_face = faces[getMainFaceID(faces, face_data.img.size())];
-		face_data.scaled_landmarks = main_face.landmarks;
 
 		// Calculate crop bounding box
 		face_data.bbox = getFaceBBoxFromLandmarks(face_data.scaled_landmarks, face_data.img.size(), true);

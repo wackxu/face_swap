@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 	string reg_model_path, reg_deploy_path, reg_mean_path;
 	string seg_model_path, seg_deploy_path;
     string log_path, cfg_path;
-    bool generic, with_expr, with_gpu;
+    bool generic, with_expr, with_gpu, use_dlib;
     unsigned int gpu_device_id, verbose;
 	try {
 		options_description desc("Allowed options");
@@ -124,6 +124,7 @@ int main(int argc, char* argv[])
 			("gpu_id", value<unsigned int>(&gpu_device_id)->default_value(0), "GPU's device id")
             ("log", value<string>(&log_path)->default_value("face_swap_batch_log.csv"), "log file path")
             ("cfg", value<string>(&cfg_path)->default_value("face_swap_batch.cfg"), "configuration file (.cfg)")
+            ("use_dlib", value<bool>(&use_dlib)->default_value(false), "use dlib")
 			;
 		variables_map vm;
 		store(command_line_parser(argc, argv).options(desc).
@@ -249,7 +250,7 @@ int main(int argc, char* argv[])
             timer.start();
 
             // Do face swap
-            rendered_img = rendered_img = fs->swap(src_face_data, tgt_face_data);
+            rendered_img = rendered_img = fs->swap(src_face_data, tgt_face_data, use_dlib);
             if (rendered_img.empty())
             {
                 logError(log, img_pair, "Face swap failed!", verbose);

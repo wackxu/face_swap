@@ -212,7 +212,7 @@ void convert_face_data(FaceData& in_face_data, FaceDataInterface* out_face_data)
 	out_face_data->max_bbox_res = in_face_data.max_bbox_res;
 }
 
-int process(FaceDataInterface* face_data)
+int process(FaceDataInterface* face_data, bool use_dlib)
 {
 	try
 	{
@@ -226,7 +226,7 @@ int process(FaceDataInterface* face_data)
 		// Process face data
 		FaceData out_face_data;
 		convert_face_data(face_data, out_face_data);
-		instance->process(out_face_data);
+		instance->process(out_face_data, false, use_dlib);
 		convert_face_data(out_face_data, face_data);
 	}
 	catch (std::exception& e)
@@ -238,14 +238,14 @@ int process(FaceDataInterface* face_data)
 	return 0;
 }
 
-int swap(FaceDataInterface* src_data, FaceDataInterface* tgt_data, unsigned char* out)
+int swap(FaceDataInterface* src_data, FaceDataInterface* tgt_data, unsigned char* out, bool use_dlib)
 {
 	try
 	{
 		FaceData out_src_data, out_tgt_data;
 		convert_face_data(src_data, out_src_data);
 		convert_face_data(tgt_data, out_tgt_data);
-		cv::Mat render_img = instance->swap(out_src_data, out_tgt_data);
+		cv::Mat render_img = instance->swap(out_src_data, out_tgt_data, false, use_dlib);
 		convert_face_data(out_src_data, src_data);
 		convert_face_data(out_tgt_data, tgt_data);
 		bgr2rgba(render_img, out, render_img.cols, render_img.rows);

@@ -31,14 +31,14 @@ namespace face_swap
 		@param[in] tgt_data Includes all the images and intermediate data for the specific face.
 		@return The output face swapped image.
 		*/
-		cv::Mat swap(FaceData& src_data, FaceData& tgt_data);
+		cv::Mat swap(FaceData& src_data, FaceData& tgt_data, bool use_dlib);
 
 		/** Process a single image and save the intermediate face data.
 		@param[in] face_data Includes all the images and intermediate data for the specific face.
 		@param[in] process_flipped Toggle processing of flipped image.
 		@return true for success and false for failure.
 		*/
-		bool process(FaceData& face_data, bool process_flipped = false);
+		bool process(FaceData& face_data, bool process_flipped = false, bool use_dlib = false);
 
 		cv::Mat renderFaceData(const FaceData& img_data, float scale = 1.0f);
 
@@ -49,7 +49,7 @@ namespace face_swap
 		@param[in] face_data Includes all the images and intermediate data for the specific face.
 		@return true for success and false for failure.
 		*/
-		bool preprocessImages(FaceData& face_data);
+		bool preprocessImages(FaceData& face_data, bool use_dlib);
 
 	private:
 		//std::shared_ptr<sfl::SequenceFaceLandmarks> m_sfl;

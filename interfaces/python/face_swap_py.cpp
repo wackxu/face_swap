@@ -203,22 +203,22 @@ public:
 			generic, with_expr, with_gpu, gpu_device_id);
 	}
 
-	bool process(FaceData& face_data)
+	bool process(FaceData& face_data, bool use_dlib)
 	{
 		face_swap::FaceData cpp_face_data;
 		convert_face_data(face_data, cpp_face_data);
-		bool res = m_fs->process(cpp_face_data);
+		bool res = m_fs->process(cpp_face_data, false, use_dlib);
 		convert_face_data(cpp_face_data, face_data);
 
 		return res;
 	}
 
-	np::ndarray swap(FaceData& src_data, FaceData& tgt_data)
+	np::ndarray swap(FaceData& src_data, FaceData& tgt_data, bool use_dlib)
 	{
 		face_swap::FaceData cpp_src_data, cpp_tgt_data;
 		convert_face_data(src_data, cpp_src_data);
 		convert_face_data(tgt_data, cpp_tgt_data);
-		cv::Mat rendered_img = m_fs->swap(cpp_src_data, cpp_tgt_data);
+		cv::Mat rendered_img = m_fs->swap(cpp_src_data, cpp_tgt_data, use_dlib);
 		convert_face_data(cpp_src_data, src_data);
 		convert_face_data(cpp_tgt_data, tgt_data);
 

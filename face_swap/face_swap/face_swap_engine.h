@@ -51,7 +51,7 @@ namespace face_swap
 		@param[in] tgt_data Includes all the images and intermediate data for the specific face.
 		@return The output face swapped image.
 		*/
-		virtual cv::Mat swap(FaceData& src_data, FaceData& tgt_data) = 0;
+		virtual cv::Mat swap(FaceData& src_data, FaceData& tgt_data, bool use_dlib) = 0;
 
 		/** Process a single image and save the intermediate face data.
 		@param[in] face_data Includes all the images and intermediate data for the specific face.

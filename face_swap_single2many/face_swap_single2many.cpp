@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 	string reg_model_path, reg_deploy_path, reg_mean_path;
 	string seg_model_path, seg_deploy_path;
     string log_path, cfg_path;
-    bool generic, with_expr, with_gpu, reverse, cache;
+    bool generic, with_expr, with_gpu, reverse, cache, use_dlib;
     unsigned int gpu_device_id, verbose;
 	try {
 		options_description desc("Allowed options");
@@ -138,6 +138,7 @@ int main(int argc, char* argv[])
 			("gpu_id", value<unsigned int>(&gpu_device_id)->default_value(0), "GPU's device id")
             ("log", value<string>(&log_path)->default_value("face_swap_single2many_log.csv"), "log file path")
             ("cfg", value<string>(&cfg_path)->default_value("face_swap_single2many.cfg"), "configuration file (.cfg)")
+            ("use_dlib", value<bool>(&use_dlib)->default_value(false), "use dlib")
 			;
 		variables_map vm;
 		store(command_line_parser(argc, argv).options(desc).
@@ -283,7 +284,7 @@ int main(int argc, char* argv[])
 
 				// Do face swap
 				std::cout << "Processing source image..." << std::endl;
-				if (!fs->process(src_face_data, cache))
+				if (!fs->process(src_face_data, cache, use_dlib))
 				{
 					logError(log, std::make_pair(src_img_path, tgt_img_path), "Failed to find a face in source image!", verbose);
 					continue;
@@ -292,7 +293,7 @@ int main(int argc, char* argv[])
 					writeFaceData(src_img_path, src_face_data, false);
 
 				std::cout << "Processing target image..." << std::endl;
-				if(!fs->process(tgt_face_data, cache))
+				if(!fs->process(tgt_face_data, cache, use_dlib))
 				{
 					logError(log, std::make_pair(src_img_path, tgt_img_path), "Failed to find a face in target image!", verbose);
 					continue;
@@ -302,8 +303,8 @@ int main(int argc, char* argv[])
 
 				std::cout << "Swapping images..." << std::endl;
 				cv::Mat rendered_img;
-				if (!reverse) rendered_img = fs->swap(src_face_data, tgt_face_data);
-				else rendered_img = fs->swap(tgt_face_data, src_face_data);
+				if (!reverse) rendered_img = fs->swap(src_face_data, tgt_face_data, use_dlib);
+				else rendered_img = fs->swap(tgt_face_data, src_face_data, use_dlib);
 				if (rendered_img.empty())
 				{
 					logError(log, std::make_pair(src_img_path, tgt_img_path), "Face swap failed!", verbose);

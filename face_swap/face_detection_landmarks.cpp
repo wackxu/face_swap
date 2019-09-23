@@ -1,3 +1,4 @@
+#include "face_swap/kalman_filter.h"
 #include "face_swap/face_detection_landmarks.h"
 
 // std
@@ -36,6 +37,7 @@ namespace face_swap
 		// dlib
 		dlib::frontal_face_detector m_detector;
 		dlib::shape_predictor m_landmarks_model;
+		MineKalmanFilter m_kal_filter;
 
 	public:
 		FaceDetectionLandmarksImpl(const std::string& landmarks_path)
@@ -46,9 +48,10 @@ namespace face_swap
 			// Shape predictor for finding landmark positions given an image and face bounding box.
 			if (landmarks_path.empty()) return;
 			dlib::deserialize(landmarks_path) >> m_landmarks_model;
+			m_kal_filter = MineKalmanFilter();
 		}
 		
-		void process(const cv::Mat& frame, std::vector<Face>& faces)
+		void process(const cv::Mat& frame, std::vector<Face>& faces, bool is_target)
 		{
 			// Convert OpenCV's mat to dlib format 
 			dlib::cv_image<dlib::bgr_pixel> dlib_frame(frame);
@@ -66,7 +69,17 @@ namespace face_swap
 
 				// Set landmarks
 				dlib::full_object_detection shape = m_landmarks_model(dlib_frame, dlib_rect);
-				dlib_obj_to_points(shape, curr_face.landmarks);
+				
+				std::vector<cv::Point> newPoints;
+                		if (is_target)
+                		{
+                    			dlib_obj_to_points(shape, newPoints);
+                    			curr_face.landmarks = m_kal_filter.getPredictPoints(newPoints);
+                		}
+                		else
+               			{	
+                    			dlib_obj_to_points(shape, curr_face.landmarks);
+               			}
 
 				// Set face bounding box
 				curr_face.bbox.x = (int)dlib_rect.left();

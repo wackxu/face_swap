@@ -64,7 +64,7 @@ endif()
 find_package(Boost REQUIRED filesystem program_options regex timer thread chrono)
 
 # OpenCV
-find_package(OpenCV REQUIRED highgui imgproc imgcodecs calib3d photo)
+find_package(OpenCV REQUIRED highgui imgproc imgcodecs calib3d photo video)
 
 # dlib
 find_package(dlib REQUIRED)

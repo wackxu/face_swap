@@ -38,6 +38,7 @@ namespace face_swap
 		// Processing parameters
 		bool enable_seg = true;
 		int max_bbox_res = 0;
+		bool is_target = false;
 	};
 
 	/** Face swap interface.

@@ -286,7 +286,7 @@ namespace face_swap
 		//const sfl::Face* face = lmsFrame.getFace(sfl::getMainFaceID(m_sfl->getSequence()));
 
 		std::vector<Face> faces;
-		m_lms->process(face_data.img, faces);
+		m_lms->process(face_data.img, faces, face_data.is_target);
 		if (faces.empty()) return false;
 		Face& main_face = faces[getMainFaceID(faces, face_data.img.size())];
 		face_data.scaled_landmarks = main_face.landmarks;

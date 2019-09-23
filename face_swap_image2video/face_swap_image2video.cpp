@@ -279,13 +279,13 @@ int main(int argc, char* argv[])
                 double tgt_fps = tgt_vid.get(cv::CAP_PROP_FPS);
 
                 // Initialize output video
-                cv::VideoWriter out_vid(curr_output_path, CV_FOURCC('H', '2', '6', '4'), tgt_fps, tgt_size);
+                cv::VideoWriter out_vid(curr_output_path, 0x21, tgt_fps, tgt_size);
                 cv::VideoWriter render_vid;
                 if (verbose > 0)
                 {
                     string debug_render_path = (path(output_path) /=
                         (path(curr_output_path).stem() += "_render.mp4")).string();
-                    render_vid.open(debug_render_path, CV_FOURCC('H', '2', '6', '4'), tgt_fps, tgt_size);
+                    render_vid.open(debug_render_path, 0x21, tgt_fps, tgt_size);
                 }
 
                 // Main processing loop
@@ -299,6 +299,7 @@ int main(int argc, char* argv[])
                     tgt_face_data.img = frame;
                     tgt_face_data.enable_seg = toggle_tgt_seg;
                     tgt_face_data.max_bbox_res = tgt_max_res;
+		    tgt_face_data.is_target = true;
 
                     // Start measuring time
                     timer.start();

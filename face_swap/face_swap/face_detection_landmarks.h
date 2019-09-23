@@ -32,7 +32,7 @@ namespace face_swap
 		@param frame The frame to process [BGR].
 		@param faces The output faces detected in the frame.
 		*/
-		virtual void process(const cv::Mat& frame, std::vector<Face>& faces) = 0;
+		virtual void process(const cv::Mat& frame, std::vector<Face>& faces, bool is_target) = 0;
 
 		/** @brief Create an instance initialized with a landmarks model file.
 		@param landmarks_path Path to the landmarks model file (.dat).

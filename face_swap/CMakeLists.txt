@@ -11,6 +11,7 @@ set(SRC
 	face_detection_landmarks.cpp
 	landmarks_utilities.cpp
 	segmentation_utilities.cpp
+        kalman_filter.cpp
 )
 set(HDR
 	face_swap/basel_3dmm.h
@@ -25,6 +26,7 @@ set(HDR
 	face_swap/face_detection_landmarks.h
 	face_swap/landmarks_utilities.h
 	face_swap/segmentation_utilities.h
+        face_swap/kalman_filter.h
 )
 
 if(PROTOBUF_FOUND)

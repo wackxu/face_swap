@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 	string reg_model_path, reg_deploy_path, reg_mean_path;
 	string seg_model_path, seg_deploy_path;
     string cfg_path;
-    bool generic, with_expr, with_gpu, cache;
+    bool generic, with_expr, with_gpu, cache, use_dlib;
     unsigned int gpu_device_id, verbose;
 	try {
 		options_description desc("Allowed options");
@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 			("gpu", value<bool>(&with_gpu)->default_value(true), "toggle GPU / CPU")
 			("gpu_id", value<unsigned int>(&gpu_device_id)->default_value(0), "GPU's device id")
             ("cfg", value<string>(&cfg_path)->default_value("face_swap_image.cfg"), "configuration file (.cfg)")
+            ("use_dlib", value<bool>(&use_dlib)->default_value(false), "use dlib")
 			;
 		variables_map vm;
 		store(command_line_parser(argc, argv).options(desc).
@@ -138,11 +139,11 @@ int main(int argc, char* argv[])
 		//tgt_data.img = target_img;
 		tgt_data.seg = target_seg;
 		std::cout << "Processing source image..." << std::endl;
-		fs->process(src_data);
+		fs->process(src_data, false, use_dlib);
 		std::cout << "Processing target image..." << std::endl;
-		fs->process(tgt_data);
+		fs->process(tgt_data, false, use_dlib);
 		std::cout << "Swapping images..." << std::endl;
-		cv::Mat rendered_img = fs->swap( src_data, tgt_data);
+		cv::Mat rendered_img = fs->swap( src_data, tgt_data, use_dlib);
         if (rendered_img.empty())
             throw std::runtime_error("Face swap failed!");
 

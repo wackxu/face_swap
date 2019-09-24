@@ -58,11 +58,11 @@ namespace face_swap
 		*m_basel_3dmm = Basel3DMM::load(model_3dmm_h5_path);
 	}
 
-	cv::Mat FaceSwapEngineImpl::swap(FaceData& src_data, FaceData& tgt_data)
+	cv::Mat FaceSwapEngineImpl::swap(FaceData& src_data, FaceData& tgt_data, bool use_dlib)
 	{
 		// Process images
-		process(src_data);
-		process(tgt_data);
+		process(src_data, false, use_dlib);
+		process(tgt_data, false, use_dlib);
 
 		// Check if horizontal flip is required
 		float src_angle = getFaceApproxHorAngle(src_data.cropped_landmarks);
@@ -163,12 +163,12 @@ namespace face_swap
 		return blend(tgt_rendered_img, tgt_data.scaled_img, mask);
 	}
 
-	bool FaceSwapEngineImpl::process(FaceData& face_data, bool process_flipped)
+	bool FaceSwapEngineImpl::process(FaceData& face_data, bool process_flipped, bool use_dlib)
 	{
 		// Preprocess input image
-		if (face_data.scaled_landmarks.empty())
+		if (face_data.cropped_landmarks.empty())
 		{
-			if (!preprocessImages(face_data))
+			if (!preprocessImages(face_data, use_dlib))
 				return false;
 		}
 
@@ -276,7 +276,7 @@ namespace face_swap
 		return out;
 	}
 
-	bool FaceSwapEngineImpl::preprocessImages(FaceData& face_data)
+	bool FaceSwapEngineImpl::preprocessImages(FaceData& face_data, bool use_dlib)
 	{
 		// Calculate landmarks
 		//m_sfl->clear();
@@ -285,11 +285,14 @@ namespace face_swap
 		////std::cout << "faces found = " << lmsFrame.faces.size() << std::endl;    // Debug
 		//const sfl::Face* face = lmsFrame.getFace(sfl::getMainFaceID(m_sfl->getSequence()));
 
-		std::vector<Face> faces;
-		m_lms->process(face_data.img, faces);
-		if (faces.empty()) return false;
-		Face& main_face = faces[getMainFaceID(faces, face_data.img.size())];
-		face_data.scaled_landmarks = main_face.landmarks;
+		if (use_dlib)
+        {
+            std::vector<Face> faces;
+            m_lms->process(face_data.img, faces);
+            if (faces.empty()) return false;
+            Face& main_face = faces[getMainFaceID(faces, face_data.img.size())];
+            face_data.scaled_landmarks = main_face.landmarks;
+        }
 
 		// Calculate crop bounding box
 		face_data.bbox = getFaceBBoxFromLandmarks(face_data.scaled_landmarks, face_data.img.size(), true);

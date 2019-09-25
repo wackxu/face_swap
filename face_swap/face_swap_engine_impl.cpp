@@ -72,42 +72,14 @@ namespace face_swap
 		cv::Mat src_shape_coefficients, src_tex_coefficients, src_expr_coefficients;
 		cv::Mat src_vecR, src_vecT;
 		cv::Mat src_K = src_data.K;
-		if ((src_angle * tgt_angle) < 0 && std::abs(src_angle - tgt_angle) > (CV_PI / 18.0f) &&
-            std::abs(src_angle) > (CV_PI / 36.0f))
-		{
-			// Horizontal flip the source image
-			cv::flip(src_data.cropped_img, cropped_src, 1);
-			if (!src_data.cropped_seg.empty())
-				cv::flip(src_data.cropped_seg, cropped_src_seg, 1);
 
-			// Horizontal flip the source landmarks
-			horFlipLandmarks(cropped_src_landmarks, cropped_src.cols);
-
-			// Recalculate source coefficients
-			if (src_data.shape_coefficients_flipped.empty() || src_data.expr_coefficients_flipped.empty())
-			{
-				m_cnn_3dmm_expr->process(cropped_src, cropped_src_landmarks,
-					src_data.shape_coefficients_flipped,
-					src_data.tex_coefficients_flipped, src_data.expr_coefficients_flipped,
-					src_data.vecR_flipped, src_data.vecT_flipped, src_data.K);
-			}
-
-			src_shape_coefficients = src_data.shape_coefficients_flipped;
-			src_tex_coefficients = src_data.tex_coefficients_flipped;
-			src_expr_coefficients = src_data.expr_coefficients_flipped;
-			src_vecR = src_data.vecR_flipped;
-			src_vecT = src_data.vecT_flipped;
-		}
-		else
-		{
-			cropped_src = src_data.cropped_img;
-			cropped_src_seg = src_data.cropped_seg;
-			src_shape_coefficients = src_data.shape_coefficients;
-			src_tex_coefficients = src_data.tex_coefficients;
-			src_expr_coefficients = src_data.expr_coefficients;
-			src_vecR = src_data.vecR;
-			src_vecT = src_data.vecT;
-		}
+		cropped_src = src_data.cropped_img;
+		cropped_src_seg = src_data.cropped_seg;
+		src_shape_coefficients = src_data.shape_coefficients;
+		src_tex_coefficients = src_data.tex_coefficients;
+		src_expr_coefficients = src_data.expr_coefficients;
+		src_vecR = src_data.vecR;
+		src_vecT = src_data.vecT;
 
 		// Source mesh
 		Mesh src_mesh;
@@ -348,3 +320,4 @@ namespace face_swap
 	}
 
 }   // namespace face_swap
+

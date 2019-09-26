@@ -160,28 +160,51 @@ void convert(cv::Rect& in, np::ndarray& out)
 template<typename T1, typename T2>
 void convert_face_data(T1& in_face_data, T2& out_face_data)
 {
-	convert(in_face_data.img, out_face_data.img);
+    std::cout << "convert_face_data 1...." << std::endl;
+    convert(in_face_data.img, out_face_data.img);
+    std::cout << "convert_face_data 2...." << std::endl;
 	convert(in_face_data.seg, out_face_data.seg);
+    std::cout << "convert_face_data 3...." << std::endl;
 	convert(in_face_data.scaled_img, out_face_data.scaled_img);
+    std::cout << "convert_face_data 4...." << std::endl;
 	convert(in_face_data.scaled_seg, out_face_data.scaled_seg);
+    std::cout << "convert_face_data 5...." << std::endl;
 	convert(in_face_data.cropped_img, out_face_data.cropped_img);
+    std::cout << "convert_face_data 6...." << std::endl;
 	convert(in_face_data.cropped_seg, out_face_data.cropped_seg);
+    std::cout << "convert_face_data 7...." << std::endl;
 	convert(in_face_data.scaled_landmarks, out_face_data.scaled_landmarks);
+    std::cout << "convert_face_data 8...." << std::endl;
 	convert(in_face_data.cropped_landmarks, out_face_data.cropped_landmarks);
+    std::cout << "convert_face_data 9...." << std::endl;
 	convert(in_face_data.bbox, out_face_data.bbox);
+    std::cout << "convert_face_data 10...." << std::endl;
 	convert(in_face_data.scaled_bbox, out_face_data.scaled_bbox);
+    std::cout << "convert_face_data 11...." << std::endl;
 	convert(in_face_data.shape_coefficients, out_face_data.shape_coefficients);
+    std::cout << "convert_face_data 12...." << std::endl;
 	convert(in_face_data.tex_coefficients, out_face_data.tex_coefficients);
+    std::cout << "convert_face_data 13...." << std::endl;
 	convert(in_face_data.expr_coefficients, out_face_data.expr_coefficients);
+    std::cout << "convert_face_data 14...." << std::endl;
 	convert(in_face_data.vecR, out_face_data.vecR);
+    std::cout << "convert_face_data 15...." << std::endl;
 	convert(in_face_data.vecT, out_face_data.vecT);
+    std::cout << "convert_face_data 16...." << std::endl;
 	convert(in_face_data.K, out_face_data.K);
+    std::cout << "convert_face_data 17...." << std::endl;
 	convert(in_face_data.shape_coefficients_flipped, out_face_data.shape_coefficients_flipped);
+    std::cout << "convert_face_data 18...." << std::endl;
 	convert(in_face_data.tex_coefficients_flipped, out_face_data.tex_coefficients_flipped);
+    std::cout << "convert_face_data 19...." << std::endl;
 	convert(in_face_data.expr_coefficients_flipped, out_face_data.expr_coefficients_flipped);
+    std::cout << "convert_face_data 20...." << std::endl;
 	convert(in_face_data.vecR_flipped, out_face_data.vecR_flipped);
+    std::cout << "convert_face_data 21...." << std::endl;
 	convert(in_face_data.vecT_flipped, out_face_data.vecT_flipped);
+    std::cout << "convert_face_data 22...." << std::endl;
 	in_face_data.enable_seg = out_face_data.enable_seg;
+    std::cout << "convert_face_data 23...." << std::endl;
 	in_face_data.max_bbox_res = out_face_data.max_bbox_res;
 }
 
@@ -237,9 +260,11 @@ private:
 bool read_face_data(const std::string& path, FaceData& face_data)
 {
 	face_swap::FaceData io_face_data;
+    std::cout << "read face data cache begin...." << std::endl;
 	bool res = face_swap::readFaceData(path, io_face_data);
+    std::cout << "read face data cache end...." << std::endl;
 	convert_face_data(io_face_data, face_data);
-
+    std::cout << "read face data cache convert end...." << std::endl;
 	return res;
 }
 
@@ -247,8 +272,12 @@ bool write_face_data(const std::string& path, FaceData& face_data,
 	bool overwrite = false)
 {
 	face_swap::FaceData io_face_data;
+    std::cout << "write face data cache  convert_face_data begin...." << std::endl;
 	convert_face_data(face_data, io_face_data);
-	return face_swap::writeFaceData(path, io_face_data, overwrite);
+    std::cout << "write face data cache convert_face_data end...." << std::endl;
+    bool res = face_swap::writeFaceData(path, io_face_data, overwrite);
+    std::cout << "write face data cache end...." << res << std::endl;
+    return res;
 }
 
 BOOST_PYTHON_MODULE(face_swap_py)

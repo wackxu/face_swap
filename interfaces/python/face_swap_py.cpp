@@ -203,11 +203,11 @@ public:
 			generic, with_expr, with_gpu, gpu_device_id);
 	}
 
-	bool process(FaceData& face_data, bool use_dlib)
+	bool process(FaceData& face_data, bool use_dlib, const std::string& img_path)
 	{
 		face_swap::FaceData cpp_face_data;
 		convert_face_data(face_data, cpp_face_data);
-		bool res = m_fs->process(cpp_face_data, false, use_dlib);
+		bool res = m_fs->processA(cpp_face_data, false, use_dlib, img_path);
 		convert_face_data(cpp_face_data, face_data);
 
 		return res;

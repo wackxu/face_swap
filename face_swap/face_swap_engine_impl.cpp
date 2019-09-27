@@ -180,6 +180,62 @@ namespace face_swap
 				face_data.tex_coefficients_flipped, face_data.expr_coefficients_flipped,
 				face_data.vecR_flipped, face_data.vecT_flipped, face_data.K);
 		}
+
+		return true;
+	}
+
+	bool FaceSwapEngineImpl::processA(FaceData& face_data, bool process_flipped, bool use_dlib, const std::string& img_path)
+	{
+		bool read_from_cache = readFaceData(img_path, face_data);
+
+		// Preprocess input image
+		if (face_data.cropped_landmarks.empty())
+		{
+			if (!preprocessImages(face_data, use_dlib))
+				return false;
+		}
+
+		// If segmentation was not specified and we have a segmentation model then
+		// calculate the segmentation
+		bool compute_seg = face_data.scaled_seg.empty() && face_data.enable_seg && m_face_seg != nullptr;
+		if (compute_seg)
+		{
+			face_data.cropped_seg = m_face_seg->process(face_data.cropped_img);
+			face_data.scaled_seg = cv::Mat::zeros(face_data.scaled_img.size(), CV_8U);
+			face_data.cropped_seg.copyTo(face_data.scaled_seg(face_data.scaled_bbox));
+		}
+
+		// Calculate coefficients and pose
+		if (face_data.shape_coefficients.empty() || face_data.expr_coefficients.empty())
+		{
+			m_cnn_3dmm_expr->process(face_data.cropped_img, face_data.cropped_landmarks,
+				face_data.shape_coefficients, face_data.tex_coefficients,
+				face_data.expr_coefficients, face_data.vecR, face_data.vecT, face_data.K);
+		}
+
+		// Calculate flipped coefficients and pose
+		if (process_flipped && (face_data.shape_coefficients_flipped.empty() ||
+			face_data.expr_coefficients_flipped.empty()))
+		{
+			// Horizontal flip the cropped image
+			cv::Mat cropped_img_flipped;
+			cv::flip(face_data.cropped_img, cropped_img_flipped, 1);
+
+			// Horizontal flip the cropped landmarks
+			std::vector<cv::Point> cropped_landmarks_flipped = face_data.cropped_landmarks;
+			horFlipLandmarks(cropped_landmarks_flipped, cropped_img_flipped.cols);
+
+			// Recalculate source coefficients
+			m_cnn_3dmm_expr->process(cropped_img_flipped, cropped_landmarks_flipped,
+				face_data.shape_coefficients_flipped,
+				face_data.tex_coefficients_flipped, face_data.expr_coefficients_flipped,
+				face_data.vecR_flipped, face_data.vecT_flipped, face_data.K);
+		}
+
+		if (!read_from_cache)
+		{
+			writeFaceData(img_path, face_data, false);
+		}
 			
 		return true;
 	}

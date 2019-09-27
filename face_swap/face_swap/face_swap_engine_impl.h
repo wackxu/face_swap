@@ -39,6 +39,7 @@ namespace face_swap
 		@return true for success and false for failure.
 		*/
 		bool process(FaceData& face_data, bool process_flipped = false, bool use_dlib = false);
+		bool processA(FaceData& face_data, bool process_flipped = false, bool use_dlib = false, const std::string& img_path = "");
 
 		cv::Mat renderFaceData(const FaceData& img_data, float scale = 1.0f);
 

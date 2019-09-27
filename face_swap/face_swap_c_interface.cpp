@@ -245,7 +245,7 @@ int swap(FaceDataInterface* src_data, FaceDataInterface* tgt_data, unsigned char
 		FaceData out_src_data, out_tgt_data;
 		convert_face_data(src_data, out_src_data);
 		convert_face_data(tgt_data, out_tgt_data);
-		cv::Mat render_img = instance->swap(out_src_data, out_tgt_data, false, use_dlib);
+		cv::Mat render_img = instance->swap(out_src_data, out_tgt_data, use_dlib);
 		convert_face_data(out_src_data, src_data);
 		convert_face_data(out_tgt_data, tgt_data);
 		bgr2rgba(render_img, out, render_img.cols, render_img.rows);

@@ -102,11 +102,11 @@ void logError(std::ofstream& log, const std::pair<string, string>& img_pair,
     } 
 }
 
-void processImagePair(string seg_model_path, string seg_path, string output_path,
+void processImagePair(string seg_model_path, string seg_path, string output_path, 
 	bool cache, bool use_dlib, std::ofstream& log,
 	string& src_img_path, bool toggle_src_seg, int src_max_res,
 	string& tgt_img_path, bool toggle_tgt_seg, int tgt_max_res)
-{
+{	
 	// Initialize source face data
 	face_swap::FaceData src_face_data;
 	if (!readFaceData(src_img_path, src_face_data))
@@ -183,12 +183,12 @@ void processImagePair(string seg_model_path, string seg_path, string output_path
 	{
 		logError(log, std::make_pair(src_img_path, tgt_img_path), "Face swap failed!", verbose);
 		return;
-	}
+	}		
 
 	// Write output to file
 	std::cout << "Writing " << outputName << " to output directory." << std::endl;
 	cv::imwrite(curr_output_path, rendered_img);
-
+	
 	return;
 }
 
@@ -332,26 +332,32 @@ int main(int argc, char* argv[])
 		for (size_t i = 0; i < threads_count; i++)
 		{
 			threadpool.create_thread(boost::bind(&boost::asio::ioservice::run,&ioService));
-		}
+		}		
 
 		// Start measuring time
 		timer.start();
-
-		// For each image pair
+		
+        // For each image pair
 		for (size_t i = 0; i < src_img_paths.size(); ++i)
 		{
 			for (size_t j = 0; j < tgt_img_paths.size(); ++j)
 			{
+				string& src_img_path = src_img_paths[i];
+				bool toggle_src_seg = toggle_src_img_seg[i];
+				int src_max_res = src_img_max_res[i];
+				string& tgt_img_path = tgt_img_paths[j];
+				bool toggle_tgt_seg = toggle_tgt_img_seg[j];
+				int tgt_max_res = tgt_img_max_res[j];
+
 				processImagePair(seg_model_path, seg_path, output_path, cache, use_dlib, log,
-					src_img_paths[i], toggle_src_img_seg[i], src_img_max_res[i], 
-					tgt_img_paths[j], toggle_tgt_img_seg[j], tgt_img_max_res[j]);
-			}
+					src_img_path, toggle_src_seg, src_max_res, tgt_img_path, toggle_tgt_seg, tgt_max_res);	
+			}		
 		}
 
 
-/*
 
-		// For each image pair
+		
+        // For each image pair
 		for (size_t i = 0; i < src_img_paths.size(); ++i)
 		{
 			string& src_img_path = src_img_paths[i];
@@ -507,7 +513,6 @@ int main(int argc, char* argv[])
 				//}
 			}
 		} 
-*/
 
 		// Stop measuring time
 		timer.stop();

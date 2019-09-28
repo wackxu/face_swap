@@ -284,7 +284,7 @@ int main(int argc, char* argv[])
 
 				// Do face swap
 				std::cout << "Processing source image..." << std::endl;
-				if (!fs->process(src_face_data, cache, use_dlib))
+				if (!fs->processA(src_face_data, cache, use_dlib, src_img_path))
 				{
 					logError(log, std::make_pair(src_img_path, tgt_img_path), "Failed to find a face in source image!", verbose);
 					continue;
@@ -293,7 +293,7 @@ int main(int argc, char* argv[])
 					writeFaceData(src_img_path, src_face_data, false);
 
 				std::cout << "Processing target image..." << std::endl;
-				if(!fs->process(tgt_face_data, cache, use_dlib))
+				if(!fs->processA(tgt_face_data, cache, use_dlib, tgt_img_path))
 				{
 					logError(log, std::make_pair(src_img_path, tgt_img_path), "Failed to find a face in target image!", verbose);
 					continue;

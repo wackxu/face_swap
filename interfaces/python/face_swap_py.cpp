@@ -234,22 +234,22 @@ private:
 };
 
 
-bool read_face_data(const std::string& path, FaceData& face_data)
-{
-	face_swap::FaceData io_face_data;
-	bool res = face_swap::readFaceData(path, io_face_data);
-	convert_face_data(io_face_data, face_data);
-
-	return res;
-}
-
-bool write_face_data(const std::string& path, FaceData& face_data,
-	bool overwrite = false)
-{
-	face_swap::FaceData io_face_data;
-	convert_face_data(face_data, io_face_data);
-	return face_swap::writeFaceData(path, io_face_data, overwrite);
-}
+//bool read_face_data(const std::string& path, FaceData& face_data)
+//{
+//	face_swap::FaceData io_face_data;
+//	bool res = face_swap::readFaceData(path, io_face_data);
+//	convert_face_data(io_face_data, face_data);
+//
+//	return res;
+//}
+//
+//bool write_face_data(const std::string& path, FaceData& face_data,
+//	bool overwrite = false)
+//{
+//	face_swap::FaceData io_face_data;
+//	convert_face_data(face_data, io_face_data);
+//	return face_swap::writeFaceData(path, io_face_data, overwrite);
+//}
 
 BOOST_PYTHON_MODULE(face_swap_py)
 {
@@ -286,6 +286,6 @@ BOOST_PYTHON_MODULE(face_swap_py)
 		.def("swap", &FaceSwap::swap)
 		;
 
-	p::def("read_face_data", read_face_data);
-	p::def("write_face_data", write_face_data);
+//	p::def("read_face_data", read_face_data);
+//	p::def("write_face_data", write_face_data);
 }

@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 			("gpu_id", value<unsigned int>(&gpu_device_id)->default_value(0), "GPU's device id")
             ("log", value<string>(&log_path)->default_value("face_swap_single2many_log.csv"), "log file path")
             ("cfg", value<string>(&cfg_path)->default_value("face_swap_single2many.cfg"), "configuration file (.cfg)")
-            ("use_dlib", value<bool>(&use_dlib)->default_value(false), "use dlib")
+            ("use_dlib", value<bool>(&use_dlib)->default_value(true), "use dlib")
 			;
 		variables_map vm;
 		store(command_line_parser(argc, argv).options(desc).

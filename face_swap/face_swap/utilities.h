@@ -80,6 +80,8 @@ namespace face_swap
 	*/
 	FACE_SWAP_EXPORT bool readFaceData(const std::string& path, FaceData& face_data);
 
+    FACE_SWAP_EXPORT bool readFaceDataA(const std::string& path, FaceData& face_data);
+
 	/**	Write face data to file.
 	@param[in] path Path to an image or a directory. If the path is an image,
 	a directory will be created with the name of the image without the extension.
@@ -90,6 +92,8 @@ namespace face_swap
 	FACE_SWAP_EXPORT bool writeFaceData(const std::string& path, const FaceData& face_data,
 		bool overwrite = false);
 
+    FACE_SWAP_EXPORT bool writeFaceDataA(const std::string& path, const FaceData& face_data,
+                                        bool overwrite = false);
 
 }   // namespace face_swap
 

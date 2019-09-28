@@ -17,6 +17,8 @@
 // Protobuf
 #include "face_data.pb.h"
 
+using std::cout;
+using std::endl;
 using namespace boost::filesystem;
 
 #endif // WITH_PROTOBUF
@@ -614,6 +616,17 @@ namespace face_swap
 		return false;
 #endif // WITH_PROTOBUF		
 	}
+
+    bool readFaceDataA(const std::string& img_path, FaceData& face_data)
+    {
+        std::cout << "readFaceDataA " << img_path << std::endl;
+    }
+
+    bool writeFaceDataA(const std::string& img_path,
+                       const FaceData& face_data, bool overwrite)
+    {
+        std::cout << "writeFaceDataA " << img_path << std::endl;
+    }
 	
 }   // namespace face_swap
 

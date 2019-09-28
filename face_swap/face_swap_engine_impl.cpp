@@ -11,6 +11,9 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>  // Debug
 
+using std::cout;
+using std::endl;
+
 namespace face_swap
 {
 	std::shared_ptr<FaceSwapEngine> FaceSwapEngine::createInstance(
@@ -186,7 +189,12 @@ namespace face_swap
 
 	bool FaceSwapEngineImpl::processA(FaceData& face_data, bool process_flipped, bool use_dlib, const std::string& img_path)
 	{
-		bool read_from_cache = readFaceData(img_path, face_data);
+        std::cout << "step 1" << std::endl;
+        readFaceDataA(img_path, face_data);
+        std::cout << "step 2" << std::endl;
+
+        bool read_from_cache = readFaceData(img_path, face_data);
+        std::cout << "step 3" << std::endl;
 
 		// Preprocess input image
 		if (face_data.cropped_landmarks.empty())
@@ -234,7 +242,11 @@ namespace face_swap
 
 		if (!read_from_cache)
 		{
+            std::cout << "step 4" << std::endl;
 			writeFaceData(img_path, face_data, false);
+            std::cout << "step 5" << std::endl;
+            writeFaceDataA(img_path, face_data, false);
+            std::cout << "step 6" << std::endl;
 		}
 			
 		return true;

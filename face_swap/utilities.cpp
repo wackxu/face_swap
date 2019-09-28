@@ -311,13 +311,24 @@ namespace face_swap
 
 	bool readFaceData(const std::string& img_path, FaceData& face_data)
 	{
-		// Read image
-		face_data.img = cv::imread(img_path);
+        path cache_path = path(img_path).replace_extension("fs");
+        std::cout << "step 1111111111" << std::endl;
+        std::cout << cache_path << std::endl;
+
+        // Read image
+        std::cout << "step 222222" << std::endl;
+
+        face_data.img = cv::imread(img_path);
+        std::cout << "step 333333333" << std::endl;
+
 
 #ifdef WITH_PROTOBUF
 		// Check if a cache file exists
 		path cache_path = path(img_path).replace_extension("fs");
+		std::cout << "step 44444" << std::endl;
+
 		if (!is_regular_file(cache_path)) return false;
+		std::cout << "step 55555" << std::endl;
 
 		// Read from file
 		io::FaceData io_face_data;

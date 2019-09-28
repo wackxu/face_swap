@@ -1,5 +1,5 @@
 #include "face_swap/face_swap_engine.h"
-//#include "face_swap/utilities.h"
+#include "face_swap/utilities.h"
 //#include "face_swap/face_swap_c_interface.h"
 
 #include <iostream>

@@ -321,13 +321,12 @@ namespace face_swap
         face_data.img = cv::imread(img_path);
         std::cout << "step 333333333" << std::endl;
 
-        return false
 
 #ifdef WITH_PROTOBUF
 		// Check if a cache file exists
 		std::cout << "step 44444" << std::endl;
 
-		if (!is_regular_file(cache_path.string())) return false;
+		//if (!is_regular_file(cache_path.string())) return false;
 		std::cout << "step 55555" << std::endl;
 
 		// Read from file

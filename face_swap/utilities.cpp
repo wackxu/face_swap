@@ -321,6 +321,7 @@ namespace face_swap
         face_data.img = cv::imread(img_path);
         std::cout << "step 333333333" << std::endl;
 
+        return false
 
 #ifdef WITH_PROTOBUF
 		// Check if a cache file exists
@@ -503,7 +504,7 @@ namespace face_swap
 
 		// Check if a cache file exists
 		path cache_path = path(img_path).replace_extension("fs");
-		if (!overwrite && is_regular_file(cache_path.string())) return false;
+		//if (!overwrite && is_regular_file(cache_path.string())) return false;
 
 		// cropped_seg
 		if (!face_data.cropped_seg.empty())
